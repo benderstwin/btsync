@@ -8,8 +8,8 @@ MAINTAINER Bender77
 ADD http://download-new.utorrent.com/endpoint/btsync/os/linux-x64/track/stable /usr/bin/btsync.tar.gz
 RUN cd /usr/bin && tar -xzvf btsync.tar.gz && rm btsync.tar.gz
 
-#Dump the default config
-btsync --dump-sample-config > btsync.conf
+#Grab the config
+ADD https://github.com/benderstwin/btsync/blob/master/btsync.conf /btsync.conf
 
 # Web GUI
 EXPOSE 8888
