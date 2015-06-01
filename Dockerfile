@@ -1,5 +1,4 @@
 # BitTorrent Sync
-# VERSION 0.2
 
 FROM debian:latest
 
