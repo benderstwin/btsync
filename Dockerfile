@@ -1,6 +1,6 @@
 # BitTorrent Sync
 
-FROM debian:latest
+FROM debian:7
 
 MAINTAINER Bender77
 
