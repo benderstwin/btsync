@@ -1,20 +1,13 @@
-# BitTorrent Sync
+FROM bender77/debianbase
 
-FROM debian:7
+ENV BTSYNC_USER btsync
+ENV UID 22000
 
-MAINTAINER Bender77
-
-# Download and extract the executable to /usr/bin
+RUN apt-get update && apt-get install -qy unzip
+RUN useradd --no-create-home -g users --uid $UID $BTSYNC_USER
 ADD https://download-cdn.getsyncapp.com/stable/linux-x64/BitTorrent-Sync_x64.tar.gz /btsync.tar.gz
 RUN tar -xzvf btsync.tar.gz && rm btsync.tar.gz
 
-#Grab the config
-ADD https://github.com/benderstwin/btsync/blob/master/btsync.conf /btsync/btsync.conf
+USER $BTSYNC_USER
 
-# Web GUI
-EXPOSE 8888
-# Listening port
-EXPOSE 55555
-ENTRYPOINT ["btsync"]
-#CMD ["--config", "/btsync/btsync.conf", "--nodaemon"]
 CMD ["/btsync", "--nodaemon", "--log", "file", "--webui.listen", "0.0.0.0:8888"]
