@@ -1,20 +1,24 @@
-Building the Image
+Docker Btsync
 
-docker build -t btsync .
+This is a Dockerfile to set up Bittorrent Sync. If you want a custom btsync.conf, add it to the root directory before building and edit the Dockerfile and start.sh. Otherwise, just edit the values from the webui.
 
-Running BitTorrent Sync
+We'll assume that the data directories to by sync'd will all live under one directory that can be mounted via -v <host_dir>:/data. The config/logging directory will live in a data-only volume.
 
-docker run -d -p 8888:8888 -p 55555:55555 -v /srv/btsync/:/btsync/ btsync
+Note: UPnP doesn't work...NAP-PMP must be enabled on the router, or forward the ports manually.
+Build
 
--d run in detached mode
+Create config volume and set permissions (remember to set permissions on any bind-mounted volumes as well):
 
--p expose container port [public-port]:[container-port]
+# docker run -v /.sync --name btsync_config scratch true &> /dev/null
+# docker run -it --rm --volumes-from btsync_config ubuntu /bin/bash
+root@xxxxx # chown -R 22000 /.sync
 
-    btsync.conf sets the container ports 8888 as the web ui and 55555 as the listening port
+Change the webui listening port in the Dockerfile if necessary (default is 8888), then:
 
-    If you do not explicitly set a public port, a random open port will be used because the ports are exposed in the Dockerfile
+# docker build -t btsync .
 
--v mount a local directory in the container [host-dir]:[container-dir]
+Run
 
-    btsync.conf should be located in a directory mounted to the container directory /btsync/
+Systemd service file available.
 
+# docker run -d -v /mnt/media:/mnt/media --volumes-from btsync_config -p 30000:30000 -p 8888:8888 --name btsync_run btsync
