@@ -16,4 +16,5 @@ EXPOSE 8888
 # Listening port
 EXPOSE 55555
 ENTRYPOINT ["btsync"]
-CMD ["--config", "/btsync/btsync.conf", "--nodaemon"]
+#CMD ["--config", "/btsync/btsync.conf", "--nodaemon"]
+CMD ["/btsync", "--nodaemon", "--log", "file", "--webui.listen", "0.0.0.0:8888"]
