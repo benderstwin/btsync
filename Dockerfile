@@ -9,5 +9,5 @@ ADD https://download-cdn.getsyncapp.com/stable/linux-x64/BitTorrent-Sync_x64.tar
 RUN tar -xzvf btsync.tar.gz && rm btsync.tar.gz
 
 USER $BTSYNC_USER
-
-CMD ["/btsync", "--nodaemon", "--log", "file", "--webui.listen", "0.0.0.0:8888"]
+ENTRYPOINT ["btsync"]
+CMD ["--config", "/btsync/btsync.conf", "--nodaemon"]
